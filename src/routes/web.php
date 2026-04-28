@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,10 +18,6 @@ Route::get('/about', function () {
 
 Route::get('/company', function () {
     return view('company');
-});
-
-Route::get('/user/{id}', function ($id) {
-    return 'ユーザーID: ' . $id;
 });
 
 Route::get('/post/{category}/{id}', function ($category, $id) {
@@ -79,15 +77,9 @@ Route::get('/greeting', function () {
 
 Route::get('/xss-demo', function () {
     // 攻撃者が入力したコメント（本来はフォームから受け取る）
-   $comment = '<strong>太字</strong>のテキスト';
+  $comment = '<strong>太字</strong>のテキスト';
 
     return view('xss-demo', compact('comment'));
-});
-
-Route::get('/users', function () {
-    $users = ['太郎', '花子', '次郎', '三郎'];
-
-    return view('users', compact('users'));
 });
 
 Route::get('/layout/home', function () {
@@ -105,3 +97,7 @@ Route::get('/layout/contact', function () {
 Route::get('/component-demo', function () {
     return view('component-demo');
 });
+
+Route::resource('users', UserController::class);
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
