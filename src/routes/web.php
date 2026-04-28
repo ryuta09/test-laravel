@@ -26,9 +26,9 @@ Route::get('/post/{category}/{id}', function ($category, $id) {
     return "カテゴリ: {$category}, 記事ID: {$id}";
 });
 
-Route::get('/greeting/{name?}', function ($name = 'ゲスト') {
-    return "こんにちは、{$name}さん";
-});
+// Route::get('/greeting/{name?}', function ($name = 'ゲスト') {
+//     return "こんにちは、{$name}さん";
+// });
 
 // ルートに名前をつける
 Route::get('/profile/user', function () {
@@ -56,4 +56,52 @@ Route::prefix('admin')->name('admin.')->group(function () {
   Route::get('/users', function () {
       return 'ユーザー管理';
   })->name('users');      // ルート名: admin.users
+});
+
+// routes/web.php
+Route::get('/hello', function () {
+    $text = 'Laravel';
+    return view('hello', compact('text'));
+});
+// Route::get('/greeting', function () {
+//     return view('greeting', ['name' => '太郎']);
+// });
+
+// Route::get('/greeting', function () {
+//     return view('greeting')->with('name', '佐藤');
+// });
+
+Route::get('/greeting', function () {
+    $age = 31;
+
+    return view('greeting', compact('age'));
+});
+
+Route::get('/xss-demo', function () {
+    // 攻撃者が入力したコメント（本来はフォームから受け取る）
+   $comment = '<strong>太字</strong>のテキスト';
+
+    return view('xss-demo', compact('comment'));
+});
+
+Route::get('/users', function () {
+    $users = ['太郎', '花子', '次郎', '三郎'];
+
+    return view('users', compact('users'));
+});
+
+Route::get('/layout/home', function () {
+    return view('pages.home');
+});
+
+Route::get('/layout/about', function () {
+    return view('pages.about');
+});
+
+Route::get('/layout/contact', function () {
+    return view('pages.contact');
+});
+
+Route::get('/component-demo', function () {
+    return view('component-demo');
 });
