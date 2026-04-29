@@ -38,5 +38,23 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
 
-    
+    // 商品登録フォームを表示
+    public function create()
+    {
+        return view('products.create');
+    }
+
+    // フォームから送信されたデータを処理
+    public function store(Request $request)
+    {
+         // バリデーション（入力チェック）
+      $validated = $request->validate([
+          'name' => 'required|max:100',
+          'price' => 'required|integer|min:0|max:10000000',
+          'description' => 'required|max:500',
+      ]);
+  
+      // バリデーションが成功した場合のみここに到達
+      return "商品「{$validated['name']}」(価格: " . number_format($validated['price']) . "円) を受け取りました！説明: {$validated['description']}";
+    }
 }
