@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -122,3 +123,5 @@ Route::get('/session-show', function () {
 });
 
 Route::resource('products', ProductController::class);
+
+Route::get('/search', [SearchController::class, 'index']);
