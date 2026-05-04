@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PaginationController;
+use App\Http\Controllers\ImageUploadController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -137,3 +138,7 @@ Route::resource('products', ProductController::class);
 Route::get('/search', [SearchController::class, 'index']);
 
 Route::get('/pagination', [PaginationController::class, 'index']);
+
+Route::get('/image-upload', [ImageUploadController::class, 'index']);          // 一覧表示
+Route::get('/image-upload/create', [ImageUploadController::class, 'create']);  // 登録フォーム
+Route::post('/image-upload', [ImageUploadController::class, 'store']);

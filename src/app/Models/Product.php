@@ -22,6 +22,7 @@ class Product extends Model
         'stock',
         'is_published',
         'category_id',
+        'image'
     ];
 
     // この商品が属するカテゴリー（1つ）
