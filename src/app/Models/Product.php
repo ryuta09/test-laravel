@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Product extends Model
+{
+    use HasFactory, SoftDeletes;
+
+        // 定数
+    const TAX_RATE_STANDARD = 0.1;   // 標準税率10%
+    const TAX_RATE_REDUCED = 0.08;   // 軽減税率8%
+
+    // ⭐ これを追加！
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'stock',
+        'is_published',
+        'category_id',
+        'image'
+    ];
+
+    // この商品が属するカテゴリー（1つ）
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(ProductDetail::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+
+
+    // カスタムメソッド
+    public function isExpensive()
+    {
+        return $this->price >= 100000;
+    }
+
+    public function isInStock()
+    {
+        return $this->stock > 0;
+    }
+
+    public function getFormattedPrice()
+    {
+        return '¥' . number_format($this->price);
+    }
+
+    public function getPriceWithTax($taxRate = null)
+    {
+        $rate = $taxRate ?? self::TAX_RATE_STANDARD;
+        $priceWithTax = $this->price * (1 + $rate);
+        return '¥' . number_format($priceWithTax);
+    }
+}
+
+
+
+
+
+
