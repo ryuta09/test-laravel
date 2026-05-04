@@ -4,51 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品一覧</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .success { background: #d4edda; padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #4CAF50; color: white; }
+        img { border-radius: 4px; }
+        .btn { padding: 6px 12px; text-decoration: none; border-radius: 4px; margin-right: 5px; }
+        .btn-edit { background: #2196F3; color: white; }
+        .btn-delete { background: #f44336; color: white; border: none; cursor: pointer; }
+        .btn-create { background: #4CAF50; color: white; padding: 10px 20px; }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="max-w-6xl mx-auto p-8">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold">商品一覧</h1>
-            <a href="/image-upload/create" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">
-                新規登録
-            </a>
-        </div>
+<body>
+    <h1>商品一覧</h1>
 
-        {{-- 成功メッセージ --}}
-        @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            {{ session('success') }}
-        </div>
-        @endif
+    @if(session('success'))
+        <div class="success">{{ session('success') }}</div>
+    @endif
 
-        {{-- 商品一覧（グリッド表示） --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <a href="/image-upload" class="btn btn-create">新規登録</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>画像</th>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>価格</th>
+                <th>在庫</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach($products as $product)
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                {{-- 画像表示 --}}
-                @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}"
-                    alt="{{ $product->name }}"
-                    class="w-full h-48 object-cover">
-                @else
-                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500 text-sm">画像なし</span>
-                    </div>
-                @endif
-
-                {{-- 商品情報 --}}
-                <div class="p-4">
-                    <h3 class="font-bold text-xl mb-2 text-gray-800">{{ $product->name }}</h3>
-                    <p class="text-gray-600 text-sm mb-3">{{ $product->description }}</p>
-                    <div class="flex justify-between items-center">
-                        <p class="text-blue-600 font-bold text-lg">¥{{ number_format($product->price) }}</p>
-                        <p class="text-gray-500 text-sm">在庫: {{ $product->stock }}</p>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td>
+                    @if($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                        alt="{{ $product->name }}"
+                        style="width: 50px; height: 50px; object-fit: cover;">
+                    @else
+                        No Image
+                    @endif
+                </td>
+                <td>{{ $product->id }}</td>
+                <td>{{ $product->name }}</td>
+                <td>¥{{ number_format($product->price) }}</td>
+                <td>{{ $product->stock }}</td>
+                <td>
+                    <a href="/image-upload/{{ $product->id }}/edit" class="btn btn-edit">編集</a>
+                    <form action="/image-upload/{{ $product->id }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-delete"
+                                onclick="return confirm('本当に削除しますか？')">
+                            削除
+                        </button>
+                    </form>
+                </td>
+            </tr>
             @endforeach
-        </div>
-    </div>
+        </tbody>
+    </table>
 </body>
 </html>
