@@ -9,10 +9,15 @@
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
+          <div class="flex space-x-3">
             <h1 class="text-3xl font-bold text-gray-800">商品一覧</h1>
+            <a href="{{ route('products.trashed') }}"class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                削除済み商品
+            </a>
             <a href="{{ route('products.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 新規登録
             </a>
+          </div>
         </div>
 
         @if (session('success'))

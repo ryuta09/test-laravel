@@ -125,4 +125,35 @@ class ProductController extends Controller
               ->route('products.index')
               ->with('success', '商品を削除しました');
       }
+
+      // 削除済み商品一覧
+      public function trashed()
+      {
+          $products = Product::onlyTrashed()
+                            ->with('category')
+                            ->latest('deleted_at')
+                            ->paginate(10);
+
+          return view('products.trashed', compact('products'));
+      }
+
+      // 商品復元
+      public function restore($id)
+      {
+          $product = Product::onlyTrashed()->findOrFail($id);
+          $product->restore();
+
+          return redirect()->route('products.trashed')
+                          ->with('success', '商品を復元しました');
+      }
+
+      // 完全削除
+      public function forceDelete($id)
+      {
+          $product = Product::onlyTrashed()->findOrFail($id);
+          $product->forceDelete();
+
+          return redirect()->route('products.trashed')
+                          ->with('success', '商品を完全に削除しました');
+      }
 }
