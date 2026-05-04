@@ -15,7 +15,7 @@
                 通常一覧に戻る
             </a>
         </div>
-
+ProduPRod
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                 {{ session('success') }}

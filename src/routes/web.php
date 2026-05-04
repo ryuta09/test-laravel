@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\PaginationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -134,3 +135,5 @@ Route::delete('/products/{id}/force-delete', [ProductController::class, 'forceDe
 Route::resource('products', ProductController::class);
 
 Route::get('/search', [SearchController::class, 'index']);
+
+Route::get('/pagination', [PaginationController::class, 'index']);
